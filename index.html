@@ -2,66 +2,133 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>المربّي الحكيم - تطبيق دردشة</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المربّي الحكيم</title>
+
 <style>
 body {
-  font-family: sans-serif;
-  background: #f4f4f4;
-  padding: 15px;
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  margin: 0;
+  padding: 10px;
 }
+
+h2 {
+  text-align: center;
+  color: #2c3e50;
+}
+
+p {
+  text-align: center;
+  color: #555;
+}
+
 #chat {
   background: white;
+  border-radius: 8px;
   padding: 10px;
   height: 60vh;
-  overflow-y: scroll;
-  border-radius: 8px;
+  overflow-y: auto;
   margin-bottom: 10px;
 }
+
 .message {
-  background: #e1f5fe;
-  margin: 5px 0;
-  padding: 8px;
-  border-radius: 6px;
+  margin: 8px 0;
+  padding: 10px;
+  border-radius: 8px;
+  line-height: 1.5;
 }
+
+.user {
+  background: #d1ecf1;
+}
+
+.bot {
+  background: #e8f5e9;
+}
+
 #inputArea {
-  display: flex; 
+  display: flex;
+  gap: 5px;
 }
+
 input {
   flex: 1;
-  padding: 10px;
+  padding: 12px;
+  font-size: 16px;
 }
+
 button {
-  padding: 10px;
+  padding: 12px;
+  font-size: 16px;
   background: #4caf50;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
 }
 </style>
 </head>
 
 <body>
+
 <h2>👨‍🏫 المربّي الحكيم</h2>
-<p>تطبيق دردشة ذكي – تعليم الحساب والتربية الإسلامية</p>
+<p>تطبيق دردشة تعليمي بصوت بشري</p>
 
 <div id="chat"></div>
 
 <div id="inputArea">
-  <input id="msg" placeholder="اكتب رسالتك هنا...">
+  <input id="msg" type="text" placeholder="اكتب سؤالك هنا...">
   <button onclick="sendMessage()">إرسال</button>
 </div>
 
 <script>
+// ====== وظيفة الصوت البشري ======
+function speak(text) {
+  window.speechSynthesis.cancel(); // إيقاف أي صوت سابق
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = "ar-SA";
+  utterance.rate = 0.9;
+  utterance.pitch = 1.0;
+  speechSynthesis.speak(utterance);
+}
+
+// ====== منطق الرد المؤقت ======
+function getReply(userText) {
+  if (userText.includes("جمع") || userText.includes("الجمع")) {
+    return "حسنًا يا بطل، الجمع يعني أن نضع الأشياء معًا. عندنا تفاحتان، وأضفنا تفاحة. كم أصبح العدد؟ لنعدّ بهدوء.";
+  }
+
+  if (userText.includes("طرح")) {
+    return "الطرح يعني أن نأخذ شيئًا من عدد. سنشرح ذلك خطوة خطوة، ولا داعي للاستعجال.";
+  }
+
+  if (userText.includes("مرحبا") || userText.includes("السلام")) {
+    return "مرحبًا بك. أنا المربّي الحكيم، سأساعدك بهدوء وحكمة.";
+  }
+
+  return "لا بأس، اكتب سؤالك وسنتعلّم معًا خطوة خطوة. التعلّم يحتاج صبرًا، وأنت قادر بإذن الله.";
+}
+
+// ====== إرسال الرسالة ======
 function sendMessage() {
-  let chat = document.getElementById("chat");
-  let msg = document.getElementById("msg").value;
+  const chat = document.getElementById("chat");
+  const input = document.getElementById("msg");
+  const text = input.value.trim();
 
-  chat.innerHTML += `<div class="message">👤 أنت: ${msg}</div>`;
-  
-  // هنا سيتم لاحقًا ربط الذكاء الصناعي والصوت
-  chat.innerHTML += `<div class="message">🤖 المربّي: جاري التحميل...</div>`;
+  if (!text) return;
 
-  document.getElementById("msg").value = "";
+  // رسالة المستخدم
+  chat.innerHTML += `<div class="message user">👤 أنت: ${text}</div>`;
+
+  // رد النظام
+  const reply = getReply(text);
+  chat.innerHTML += `<div class="message bot">🤖 المربّي: ${reply}</div>`;
+
+  // تشغيل الصوت
+  speak(reply);
+
+  input.value = "";
+  chat.scrollTop = chat.scrollHeight;
 }
 </script>
 

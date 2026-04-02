@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>المربّي الحكيم - تطبيق دردشة</title>
+<style>
+body {
+  font-family: sans-serif;
+  background: #f4f4f4;
+  padding: 15px;
+}
+#chat {
+  background: white;
+  padding: 10px;
+  height: 60vh;
+  overflow-y: scroll;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+.message {
+  background: #e1f5fe;
+  margin: 5px 0;
+  padding: 8px;
+  border-radius: 6px;
+}
+#inputArea {
+  display: flex; 
+}
+input {
+  flex: 1;
+  padding: 10px;
+}
+button {
+  padding: 10px;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+</style>
+</head>
+
+<body>
+<h2>👨‍🏫 المربّي الحكيم</h2>
+<p>تطبيق دردشة ذكي – تعليم الحساب والتربية الإسلامية</p>
+
+<div id="chat"></div>
+
+<div id="inputArea">
+  <input id="msg" placeholder="اكتب رسالتك هنا...">
+  <button onclick="sendMessage()">إرسال</button>
+</div>
+
+<script>
+function sendMessage() {
+  let chat = document.getElementById("chat");
+  let msg = document.getElementById("msg").value;
+
+  chat.innerHTML += `<div class="message">👤 أنت: ${msg}</div>`;
+  
+  // هنا سيتم لاحقًا ربط الذكاء الصناعي والصوت
+  chat.innerHTML += `<div class="message">🤖 المربّي: جاري التحميل...</div>`;
+
+  document.getElementById("msg").value = "";
+}
+</script>
+
+</body>
+</html>

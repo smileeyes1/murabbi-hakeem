@@ -91,25 +91,24 @@ button:hover {
 
 <script>
 // =====================================================
-// 🔗 رابط Google Apps Script (كما أرسلته أنت)
+// 🔗 ضع هنا رابط Apps Script (ينتهي بـ /exec)
 // =====================================================
-const SCRIPT_URL =
-"https://script.googleusercontent.com/macros/echo?user_content_key=AWDtjMV8wwxXYZTOMCr_pkb4HmevsI8HCi0mXD3nk3r2MRM0ipIoDIaY1gS6UktZdOdHToNrbeHMhEX4E9gGbfIpaNuRRD5WPJ3sIHzrjrr4BdLOumdFe3FVK41ysBEsueTE3ioSrSwyLHLZa98oiGh-Xs4XVKqgc-4-WzBqsthIAAJhndZ8ZGt5OCxpdIwHuFYhU_dtMYPEFN9dDgFod77q9xJtVavq4V0_BFoJtxRfEfArI0frWbf0HovbO6pVhiCbFsmjK89P6NFrPC7APZAElAgTOOktazu_kHDd64B-&lib=MSoJM1Y9dI2IVhYIVZtpQRK0zeyidn1nl";
+const SCRIPT_URL = "ضع_هنا_رابطك_الذي_ينتهي_بـ_exec";
 
 // =====================================================
-// 🎙️ الجهر بالصوت البشري
+// 🎙️ الصوت البشري
 // =====================================================
 function speak(text) {
   window.speechSynthesis.cancel();
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.lang = "ar-SA";
-  utterance.rate = 0.85;   // سرعة مناسبة للتعليم
+  utterance.rate = 0.85;   // نبرة هادئة تعليمية
   utterance.pitch = 1.0;
   speechSynthesis.speak(utterance);
 }
 
 // =====================================================
-// 📤 إرسال السؤال إلى Gemini الحقيقي
+// 📩 إرسال السؤال إلى Gemini عبر Apps Script
 // =====================================================
 async function sendMessage() {
   const chat = document.getElementById("chat");
@@ -132,8 +131,13 @@ async function sendMessage() {
 
   try {
     const response = await fetch(
-      `${SCRIPT_URL}&q=${encodeURIComponent(text)}`
+      `${SCRIPT_URL}?q=${encodeURIComponent(text)}`
     );
+
+    // ✅ التعديل المهم للتعامل الصحيح مع رد Apps Script
+    if (!response.ok) {
+      throw new Error("HTTP Error");
+    }
 
     const reply = await response.text();
 
